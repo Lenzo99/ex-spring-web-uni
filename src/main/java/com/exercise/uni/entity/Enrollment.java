@@ -12,12 +12,20 @@ public class Enrollment {
 	private Student student;
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "id_cou")
+	@JoinColumn(name = "id_course", referencedColumnName ="id_course")
 	private Course course;
-	private LocalDateTime datatime;
+	private LocalDateTime date;
 	
 	/* CONSTRUCTOR */
 	public Enrollment() {}
 	
 	/* SETTER/GETTER */
+	public void setStudent(Student student) { this.student = student; }
+	public Student getStudent() { return student; }
+	
+	public void setCourse(Course course) { this.course = course; }
+	public Course getCourse() { return course; }
+	
+	public void setDate(LocalDateTime date) { this.date = date; }
+	public LocalDateTime getDate() { return date; }
 }
