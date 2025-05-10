@@ -1,4 +1,4 @@
-package com.exercise.uni;
+package com.exercise.uni.entity;
 import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
