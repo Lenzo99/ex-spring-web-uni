@@ -1,31 +1,29 @@
 package com.exercise.uni.facade;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.exercise.uni.dto.CourseDTO;
+import com.exercise.uni.dto.TechnicalDTO;
 import com.exercise.uni.service.TechnicalService;
 
-@Service
+@Component
 public class TechnicalFacade {
-	private final TechnicalService technicalService;
-	
-	/* CONSTRUCTOR */
-	public TechnicalFacade(TechnicalService technicalService) {
-		this.technicalService = technicalService;
-	}
+	@Autowired
+	private TechnicalService technicalService;
 
-	/* SERVICES */
-	public void insertCourse(int id_course, String name) {
-		technicalService.insertCourse(id_course, name);
+	// Services
+	public void insertTechnical(TechnicalDTO technicalDto) {
+		technicalService.insertTechnical(technicalDto);
 	}
 	
-	public void deleteCourse(int id_course) {
-		technicalService.deleteCourse(id_course);
-	}
-
-    public void insertTechnical(String name, String surname, String email, String password,
-    						  int id_technical, String tel) {
-    	technicalService.insertTechnical(name, surname, email, password, id_technical, tel);
+    public void deleteTechnical(int idTechnical) {
+    	technicalService.deleteTechnical(idTechnical);
     }
     
-    public void deleteTechnical(int id_technical) {
-    	technicalService.deleteTechnical(id_technical);
-    }
+	public void insertCourse(String courseName) {
+    	technicalService.insertCourse(courseName);
+	}
+    
+	public void deleteCourse(String name) {
+		technicalService.deleteCourse(name);
+	}
 }

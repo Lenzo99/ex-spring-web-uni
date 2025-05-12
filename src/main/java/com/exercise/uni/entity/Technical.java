@@ -5,16 +5,20 @@ import jakarta.persistence.*;
 @Table(name = "technical")
 public class Technical extends Person{
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_technical;
+	@Column(name="id_technical")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int idTechnical;
+	
+	@Column(name="tel", length=15, nullable=true, unique=true)
 	private String tel;
 	
-	/* CONSTRUCTOR */
+	
+	// Constructor
 	public Technical() {}
 	
-	/* SETTER/GETTER */
-	public void setIdTechnical(int id_technical) { this.id_technical = id_technical; }
-	public int getIdTechnical() { return id_technical; }
+	// Setter/Getter
+	public void setIdTechnical(int idTechnical) { this.idTechnical = idTechnical; }
+	public int getIdTechnical() { return idTechnical; }
 	
 	public void setTel(String tel) { this.tel = tel; }
 	public String getTel() { return tel; }

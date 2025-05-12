@@ -3,12 +3,20 @@ import jakarta.persistence.*;
 
 @MappedSuperclass
 public abstract class Person {
+	@Column(name="name", length=40, nullable=false, unique=false)
 	private String name;
+	
+	@Column(name="surname", length=40, nullable=false, unique=false)
 	private String surname;
+	
+	@Column(name="email", length=50, nullable=false, unique=false)
 	private String email;
+	
+	@Column(name="password", length=50, nullable=false, unique=false)
 	private String password;
 	
-	/* SETTER/GETTER */
+	
+	//  Setter/Getter
 	public void setName(String name) { this.name = name; }
 	public String getName() { return name; }
 	

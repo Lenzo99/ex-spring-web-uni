@@ -1,50 +1,79 @@
 package com.exercise.uni.controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.exercise.uni.dto.TechnicalDTO;
-import com.exercise.uni.entity.Course;
-import com.exercise.uni.entity.Technical;
 import com.exercise.uni.facade.TechnicalFacade;
 
+@RestController
+@RequestMapping("/technical")
 public class TechnicalController {
-	private final TechnicalFacade technicalFacade;
+	@Autowired
+	private TechnicalFacade technicalFacade;
 	
-	/* CONSTRUCTOR */
-	public TechnicalController(TechnicalFacade technicalFacade) {
-		this.technicalFacade = technicalFacade;
+	@PostMapping
+	public ResponseEntity<Object> insertTechnical(@RequestBody TechnicalDTO technicalDto) {
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(technicalDto.getName()) &&
+				!isEmptyField(technicalDto.getSurname()) &&
+				!isEmptyField(technicalDto.getEmail()) &&
+				!isEmptyField(technicalDto.getPassword()) && 
+				!isEmptyField(technicalDto.getTel()) ) {
+			technicalFacade.insertTechnical(technicalDto);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
 	}
 	
-	/* SERVICES */
-    @PostMapping
-    public ResponseEntity<String> insertCourse(@PathVariable int id_course, @PathVariable String name) {
-    	technicalFacade.insertCourse(id_course, name);
-        return ResponseEntity.ok("Corso inserito con successo.");
+	@DeleteMapping("{/idTechnical}")
+    public ResponseEntity<Object> deleteTechnical(@PathVariable int idTechnical) {
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( idTechnical > 0 ) {
+			technicalFacade.deleteTechnical(idTechnical);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
     }
     
-    @PostMapping
-    public ResponseEntity<String> deleteCourse(@PathVariable int id_course) {
-    	technicalFacade.deleteCourse(id_course);
-        return ResponseEntity.ok("Corso rimosso con successo.");
-    }
+	@PostMapping("/{courseName}")
+	public ResponseEntity<Object> insertCourse(String courseName) {
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(courseName) ) {
+			technicalFacade.insertCourse(courseName);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
+	}
     
-    @PostMapping
-    public ResponseEntity<String> insertTechnical(@RequestBody TechnicalDTO technicalDTO) {
-        technicalFacade.insertTechnical(
-        		technicalDTO.name,
-        		technicalDTO.surname,
-        		technicalDTO.email,
-                technicalDTO.password,
-                technicalDTO.id_technical,
-                technicalDTO.tel
-            );
-            return ResponseEntity.ok("Tecnico inserito con successo.");
-    }
+	@DeleteMapping("/{courseName}")
+	public ResponseEntity<Object> deleteCourse(String courseName) {
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+
+		if( !isEmptyField(courseName) ) {
+			technicalFacade.deleteCourse(courseName);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
+	}
     
-    @PostMapping
-    public ResponseEntity<String> deleteTechnical(@PathVariable int id_technical) {
-    	technicalFacade.deleteTechnical(id_technical);
-        return ResponseEntity.ok("Tecnico rimosso con successo.");
-    }
+	/* Checks form emptiness.
+	 * @param str is the field to check.
+	 * @return true if the field is empty.
+	 */
+	private boolean isEmptyField(String str) {
+		return (str == null || str.trim().isEmpty());
+	}
 }

@@ -5,13 +5,20 @@ public class TechnicalDTO {
     public String surname;
     public String email;
     public String password;
-    public int id_technical;
 	public String tel;
     
+    // Constructor
+	public TechnicalDTO() {}
+    public TechnicalDTO(String name, String surname, String email, String password,
+    		String tel) {
+    	this.name = name;
+    	this.surname = surname;
+    	this.email = email;
+    	this.password = password;
+    	this.tel = tel;
+    }
     
-    public TechnicalDTO() {}
-    
-    
+    // Setter/Getter
 	public void setName(String name) { this.name = name; }
 	public String getName() { return name; }
 	
@@ -23,9 +30,6 @@ public class TechnicalDTO {
 	
 	public void setPassword(String password) { this.password = password; }
 	public String getPassword() { return password; }
-	
-	public void setIdTechnical(int id_technical) { this.id_technical = id_technical; }
-	public int getIdTechnical() { return id_technical; }
 	
 	public void setTel(String tel) { this.tel = tel; }
 	public String getTel() { return tel; }

@@ -8,10 +8,19 @@ public class StudentDTO {
     public String cf;
     public String curriculum;
     
-    
+    // Constructor
     public StudentDTO() {}
+    public StudentDTO(String name, String surname, String email, String password,
+    		String cf, String curriculum) {
+    	this.name = name;
+    	this.surname = surname;
+    	this.email = email;
+    	this.password = password;
+    	this.cf = cf;
+    	this.curriculum = curriculum;
+    }
     
-    
+    // Setter/Getter
 	public void setName(String name) { this.name = name; }
 	public String getName() { return name; }
 	

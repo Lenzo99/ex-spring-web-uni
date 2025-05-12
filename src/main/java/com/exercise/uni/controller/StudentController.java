@@ -1,6 +1,9 @@
 package com.exercise.uni.controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,42 +14,76 @@ import com.exercise.uni.dto.StudentDTO;
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-	private final StudentFacade studentFacade;
+	@Autowired
+	private StudentFacade studentFacade;
 	
-	/* CONSTROCTUR */
-	public StudentController(StudentFacade studentFacade) {
-		this.studentFacade = studentFacade;
+	@PostMapping
+    public ResponseEntity<Object> insertStudent(@RequestBody StudentDTO studentDto) {
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(studentDto.getName()) &&
+				!isEmptyField(studentDto.getSurname()) &&
+				!isEmptyField(studentDto.getEmail()) &&
+				!isEmptyField(studentDto.getPassword()) && 
+				!isEmptyField(studentDto.getCf()) &&
+				!isEmptyField(studentDto.getCurriculum()) ) {
+			studentFacade.insertStudent(studentDto);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
+    }
+	
+	@DeleteMapping("/{cf}")
+	public ResponseEntity<Object> deleteStudent(@PathVariable String cf){
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(cf) ) {
+			studentFacade.deleteStudent(cf);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
 	}
 	
-	/* SERVICES */
-    @PostMapping
-    public ResponseEntity<String> insertStudent(@RequestBody StudentDTO studentDTO) {
-        studentFacade.insertStudent(
-            studentDTO.name,
-            studentDTO.surname,
-            studentDTO.email,
-            studentDTO.password,
-            studentDTO.cf,
-            studentDTO.curriculum
-        );
-        return ResponseEntity.ok("Studente inserito con successo.");
-    }
+	@PostMapping("/{cf}/enroll/{courseName}")
+	public ResponseEntity<Object> enrollStudentToCourse(@PathVariable String cf,
+			@PathVariable String courseName){
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(cf) && !isEmptyField(courseName) ) {
+			studentFacade.enrollStudentToCourse(cf, courseName);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
+	}
+	
+	@DeleteMapping("/{cf}/enroll/{courseName}")
+	public ResponseEntity<Object> unenrollStudentFromCourse(@PathVariable String cf,
+			@PathVariable String courseName){
+		ResponseEntity<Object> re = new ResponseEntity<Object>(HttpStatus.BAD_REQUEST);
+		
+		if( !isEmptyField(cf) && !isEmptyField(courseName) ) {
+			studentFacade.unenrollStudentFromCourse(cf, courseName);
+			re = new ResponseEntity<Object>(HttpStatus.OK);
+		}
+		
+		return re;
+	}
     
-    @PostMapping
-    public ResponseEntity<String> deleteStudent(@PathVariable String cf) {
-        studentFacade.deleteStudent(cf);
-        return ResponseEntity.ok("Studente eliminato con successo.");
-    }
+	/* Checks form emptiness.
+	 * @param str is the field to check.
+	 * @return true if the field is empty.
+	 */
+	private boolean isEmptyField(String str) {
+		return (str == null || str.trim().isEmpty());
+	}
     
+    /* Cosi' e' come lo ha fatto Ciwi.
     @PostMapping
-    public ResponseEntity<String> enrollStudentToCourse(@PathVariable String cf, @PathVariable int id_course)  {
-        studentFacade.enrollStudentToCourse(cf, id_course);
-        return ResponseEntity.ok("Studente iscritto al corso con successo.");
-    }
-    
-    @PostMapping
-    public ResponseEntity<String> unenrollStudentFromCourse(@PathVariable String cf, @PathVariable int id_course)  {
+    public ResponseEntity<Object> unenrollStudentFromCourse(@PathVariable String cf, @PathVariable int id_course)  {
         studentFacade.unenrollStudentFromCourse(cf, id_course);
-        return ResponseEntity.ok("Studente disiscritto al corso con successo.");
-    }
+        return new ResponseEntity<>(studentFacade.unenrollStudentFromCourse(cf, id_course), HttpStatus.OK);
+    }*/
 }

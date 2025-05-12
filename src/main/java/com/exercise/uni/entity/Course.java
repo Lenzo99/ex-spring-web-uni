@@ -5,18 +5,21 @@ import jakarta.persistence.*;
 @Table(name = "course")
 public class Course {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_course;
+	@Column(name="id_course")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int idCourse;
+	
+	@Column(name="name", length=50, nullable=false, unique=true)
 	private String name;
 	
-	/* CONSTRUCTOR */
+	
+	// Constructor
 	public Course() {}
 	
-	/* SETTER/GETETR */
-	public void setIdCourse(int id_course) { this.id_course = id_course; }
-	public int getIdCourse() { return id_course; }
+	// Setter/Getter
+	public void setIdCourse(int idCourse) { this.idCourse = idCourse; }
+	public int getIdCourse() { return idCourse; }
 	
 	public void setName(String name) { this.name = name; }
 	public String getName() { return name; }
-	
 }

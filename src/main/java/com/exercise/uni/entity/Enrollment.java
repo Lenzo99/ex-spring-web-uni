@@ -1,31 +1,38 @@
 package com.exercise.uni.entity;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 
 @Entity
 @IdClass(EnrollmentId.class)
 @Table(name = "enrollment")
 public class Enrollment {
-	@Id
 	@ManyToOne
-	@JoinColumn(name = "cf", referencedColumnName ="cf")
+	@MapsId("cf")
+	@JoinColumn(name="cf")
 	private Student student;
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "id_course", referencedColumnName ="id_course")
-	private Course course;
-	private LocalDateTime date;
 	
-	/* CONSTRUCTOR */
+	@ManyToOne
+	@MapsId("idCorso")
+	@JoinColumn(name="id_course")
+	private Course course;
+	
+	@Column(name="timestamp")
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
+	private LocalDateTime timestamp;
+	
+	
+	// Constructor
 	public Enrollment() {}
 	
-	/* SETTER/GETTER */
+	// Setter/Getter
 	public void setStudent(Student student) { this.student = student; }
 	public Student getStudent() { return student; }
 	
 	public void setCourse(Course course) { this.course = course; }
 	public Course getCourse() { return course; }
 	
-	public void setDate(LocalDateTime date) { this.date = date; }
-	public LocalDateTime getDate() { return date; }
+	public void setDate(LocalDateTime timestamp) { this.timestamp = timestamp; }
+	public LocalDateTime getDate() { return timestamp; }
 }

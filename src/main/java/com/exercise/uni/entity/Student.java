@@ -5,13 +5,17 @@ import jakarta.persistence.*;
 @Table(name = "student")
 public class Student extends Person{
 	@Id
+	@Column(name="cf", length=16)
 	private String cf;
+	
+	@Column(name="curriculum", length=50, nullable=false, unique=false)
 	private String curriculum;
 	
-	/* CONSTRUCTOR */
+	
+	// Constructor
 	public Student() {}
 	
-	/* SETTER/GETTER */
+	// Setter/Getter
 	public void setCf(String cf) { this.cf = cf; }
 	public String getCf() { return cf; }
 	
